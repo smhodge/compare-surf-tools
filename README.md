@@ -16,20 +16,15 @@ The main data file is ~analysis/abide_ct.RData, which is a row-wise collection o
 R> head(abide[abide[, "Label Name"] %in% "ctx-lh-cuneus",c(1:3, 10)])
  tex table generated in R 3.3.3 by xtable 1.8-2 package
 
-% Tue May 16 16:44:06 2017
-\begin{table}[ht]
-\centering
-\begin{tabular}{rlrll}
-  \hline
- & SubjID & thickness & method & label\_abbrev \\ 
-  \hline
-6 & Caltech\_0051456 & 1.77 & FS53 & L.CN \\ 
-  17 & Caltech\_0051456 & 0.88 & ANTS & L.CN \\ 
-  20 & Caltech\_0051456 & 1.94 & FS51 & L.CN \\ 
-  219 & Caltech\_0051457 & 1.49 & ANTS & L.CN \\ 
-  306 & Caltech\_0051457 & 2.06 & FS51 & L.CN \\ 
-  364 & Caltech\_0051457 & 2.36 & FS53 & L.CN \\ 
-   \hline
-\end{tabular}
-\end{table}
+<!-- html table generated in R 3.3.3 by xtable 1.8-2 package -->
+<!-- Tue May 16 16:48:27 2017 -->
+<table border=1>
+<tr> <th>  </th> <th> SubjID </th> <th> thickness </th> <th> method </th> <th> label_abbrev </th>  </tr>
+  <tr> <td align="right"> 6 </td> <td> Caltech_0051456 </td> <td align="right"> 1.77 </td> <td> FS53 </td> <td> L.CN </td> </tr>
+  <tr> <td align="right"> 17 </td> <td> Caltech_0051456 </td> <td align="right"> 0.88 </td> <td> ANTS </td> <td> L.CN </td> </tr>
+  <tr> <td align="right"> 20 </td> <td> Caltech_0051456 </td> <td align="right"> 1.94 </td> <td> FS51 </td> <td> L.CN </td> </tr>
+  <tr> <td align="right"> 219 </td> <td> Caltech_0051457 </td> <td align="right"> 1.49 </td> <td> ANTS </td> <td> L.CN </td> </tr>
+  <tr> <td align="right"> 306 </td> <td> Caltech_0051457 </td> <td align="right"> 2.06 </td> <td> FS51 </td> <td> L.CN </td> </tr>
+  <tr> <td align="right"> 364 </td> <td> Caltech_0051457 </td> <td align="right"> 2.36 </td> <td> FS53 </td> <td> L.CN </td> </tr>
+   </table>
 
