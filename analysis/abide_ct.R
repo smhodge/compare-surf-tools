@@ -185,8 +185,8 @@ hist(dfa$r_value, xlim = mylim, col = "skyblue", main = "ANTS v FS5.1", xlab = "
 hist(dfb$r_value, xlim = mylim, col = "skyblue", main = "ANTS v FS5.3", xlab = "r values")
 hist(dfc$r_value, xlim = mylim, col = "skyblue", main = "FS5.1 v FS5.3", xlab = "r values")
 hist(dfa_pair$r_value, xlim = mylim, col = "red", main = "ANTS v FS5.1 (diagonal)", xlab = "r values")
-hist(dfb_pair$r_value, xlim = mylim, col = "red", main = "ANTS v FS5.1 (diagonal)", xlab = "r values")
-hist(dfc_pair$r_value, xlim = mylim, col = "red", main = "ANTS v FS5.1 (diagonal)", xlab = "r values")
+hist(dfb_pair$r_value, xlim = mylim, col = "red", main = "ANTS v FS5.3 (diagonal)", xlab = "r values")
+hist(dfc_pair$r_value, xlim = mylim, col = "red", main = "FS5.1 v FS5.3 (diagonal)", xlab = "r values")
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
