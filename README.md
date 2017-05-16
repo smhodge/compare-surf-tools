@@ -14,7 +14,6 @@ R> source("analysis/heatmap_plot.R")
 The main data file is ~analysis/abide_ct.RData, which is a row-wise collection of cortical thicknesses for each study ID by method (ANTS, Freesurfer v5.1, and Freesurfer v5.3) by cortical unit. (i.e. a "long" data format). For example, to see the first 6 rows of data for the "left cuneus" label:
 
 R> head(abide[abide[, "Label Name"] %in% "ctx-lh-cuneus",c(1:3, 10)])
- tex table generated in R 3.3.3 by xtable 1.8-2 package
 
 <!-- html table generated in R 3.3.3 by xtable 1.8-2 package -->
 <!-- Tue May 16 16:48:27 2017 -->
