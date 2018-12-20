@@ -270,46 +270,46 @@ for(i in seq_along(roi)){
 	)
 
 	# # plot the results
-	# mylim <- range(c(dfws$thickness.ANTS, dfws$thickness.FS5))
+	mylim <- range(c(dfws$thickness.ANTS, dfws$thickness.FS5))
 
-	# pdf(paste0("results/qa/", roi[i], ".pdf"), height = 3.75, width = 10)
-	# # dev.new(height = 3.75, width = 10)
-	# par(mfrow = c(1, 3))
-	# plot(
-		# thickness.ANTS ~ thickness.FS53,
-		# data = dfws,
-		# pch = 21,
-		# col = "gray50",
-		# bg = as.factor(dfws$site),
-		# xlim = mylim,
-		# ylim = mylim,
-		# main = roi[i]
-	# )
-	# abline(lm1, col = "red", lwd = 2)
-	# abline(a = 0, b = 1, lty = 3)
+	pdf(paste0("results/qa/", roi[i], ".pdf"), height = 3.75, width = 10)
+	# dev.new(height = 3.75, width = 10)
+	par(mfrow = c(1, 3))
+	plot(
+		thickness.ANTS ~ thickness.FS53,
+		data = dfws,
+		pch = 21,
+		col = "gray50",
+		bg = as.factor(dfws$site),
+		xlim = mylim,
+		ylim = mylim,
+		main = roi[i]
+	)
+	abline(lm1, col = "red", lwd = 2)
+	abline(a = 0, b = 1, lty = 3)
 
-	# plot(
-		# abs(resid(lm1)) ~ dfws$anat_cnr,
-		# pch = 21,
-		# col = "gray50",
-		# bg = as.factor(dfws$site),
-		# xlab = "CNR",
-		# ylab = "abs(Residuals)",
-		# main = roi[i]
-	# )
-	# abline(rlmcnr, col = "red", lwd = 2)
+	plot(
+		abs(resid(lm1)) ~ dfws$anat_cnr,
+		pch = 21,
+		col = "gray50",
+		bg = as.factor(dfws$site),
+		xlab = "CNR",
+		ylab = "abs(Residuals)",
+		main = roi[i]
+	)
+	abline(rlmcnr, col = "red", lwd = 2)
 
-	# plot(
-		# abs(resid(lm1)) ~ dfws$anat_snr,
-		# pch = 21,
-		# col = "gray50",
-		# bg = as.factor(dfws$site),
-		# xlab = "SNR",
-		# ylab = "abs(Residuals)",
-		# main = roi[i]
-	# )
-	# abline(rlmsnr, col = "red", lwd = 2)
-	# dev.off()
+	plot(
+		abs(resid(lm1)) ~ dfws$anat_snr,
+		pch = 21,
+		col = "gray50",
+		bg = as.factor(dfws$site),
+		xlab = "SNR",
+		ylab = "abs(Residuals)",
+		main = roi[i]
+	)
+	abline(rlmsnr, col = "red", lwd = 2)
+	dev.off()
 }
 
 # adjust the output results
@@ -318,5 +318,96 @@ out_df[,-1] <- sapply(out_df[, -1], as.numeric)
 # save it to "results/qa/."
 names(out_df) <- c("roi", "method.rsqr", "method.p", "cnr.rsqr", "cnr.p", "snr.rsqr", "snr.p")
 write.csv(out_df, file = "results/qa/results2.csv", row.names = FALSE)
+
+# ----------------
+
+
+# ----------------
+# Try using non-abs(residual)
+# Get a list of the regions of interst
+roi <- sort(unique(abide$label_abbrev))
+
+# Get a subset of the ANTS and FS53 data, including only some of the columns of interest:
+voi <- c("SubjID", "thickness",  "method", "label_abbrev", "site", "anat_cnr", "anat_snr")
+abides <- subset(abide, method %in% c("ANTS", "FS53"), select = voi)
+
+# Create a results table for later:
+# roi, lm1.coef, lm1p, cnr.coef, cnr.p, snr.coef, snr.p
+out_list <- matrix(NA, nrow = length(roi), ncol = 7)
+
+for(i in seq_along(roi)){
+	cat(roi[i], "\n")
+
+	# extract and prep the data
+	df <- subset(abides, label_abbrev %in% roi[i])
+	dfw <- reshape(df, direction = "wide", idvar = c("SubjID", "label_abbrev", "site", "anat_cnr", "anat_snr"), timevar = "method")
+	# pare down to complete cases AND roi1w$anat_cnr < 20 & roi1w$anat_snr < 30
+	dfws <- subset(dfw, complete.cases(dfw[, c("thickness.ANTS", "thickness.FS53")]) & dfw$anat_cnr < 20 & dfw$anat_snr < 30)
+
+	# run the models
+	lm1 <- lm(thickness.ANTS ~ thickness.FS53, data = dfws)
+	rlmcnr <- lm(resid(lm1) ~ dfws$anat_cnr)
+	rlmsnr <- lm(resid(lm1) ~ dfws$anat_snr)
+
+	# write the model results to the output file
+	out_list[i, ] <- c(
+		roi[i], 
+		summary(lm1)$r.square,
+		summary(lm1)$coef[2, 4],
+		summary(rlmcnr)$r.square,
+		summary(rlmcnr)$coef[2, 4],
+		summary(rlmsnr)$r.square,
+		summary(rlmsnr)$coef[2, 4]
+	)
+
+	# # plot the results
+	mylim <- range(c(dfws$thickness.ANTS, dfws$thickness.FS5))
+
+	pdf(paste0("results/qa/", roi[i], "_resid.pdf"), height = 3.75, width = 10)
+	# dev.new(height = 3.75, width = 10)
+	par(mfrow = c(1, 3))
+	plot(
+		thickness.ANTS ~ thickness.FS53,
+		data = dfws,
+		pch = 21,
+		col = "gray50",
+		bg = as.factor(dfws$site),
+		xlim = mylim,
+		ylim = mylim,
+		main = roi[i]
+	)
+	abline(lm1, col = "red", lwd = 2)
+	abline(a = 0, b = 1, lty = 3)
+
+	plot(
+		resid(lm1) ~ dfws$anat_cnr,
+		pch = 21,
+		col = "gray50",
+		bg = as.factor(dfws$site),
+		xlab = "CNR",
+		ylab = "Residuals",
+		main = roi[i]
+	)
+	abline(rlmcnr, col = "red", lwd = 2)
+
+	plot(
+		resid(lm1) ~ dfws$anat_snr,
+		pch = 21,
+		col = "gray50",
+		bg = as.factor(dfws$site),
+		xlab = "SNR",
+		ylab = "Residuals",
+		main = roi[i]
+	)
+	abline(rlmsnr, col = "red", lwd = 2)
+	dev.off()
+}
+
+# adjust the output results
+out_df <- data.frame(out_list, stringsAsFactors = FALSE)
+out_df[,-1] <- sapply(out_df[, -1], as.numeric)
+# save it to "results/qa/."
+names(out_df) <- c("roi", "method.rsqr", "method.p", "cnr.rsqr", "cnr.p", "snr.rsqr", "snr.p")
+write.csv(out_df, file = "results/qa/results3.csv", row.names = FALSE)
 
 # ----------------
