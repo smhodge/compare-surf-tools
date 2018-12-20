@@ -1,3 +1,4 @@
+# 2018-12-18: not sure this was ever used or where the results were saved ("corr_rank_fs51_fs53.csv"), although it uses results from the script '02_heatmap_plot.R'. ~SMH
 # 2016-09-28
 # ABIDE analysis of average cortical thickness according to analysis method [ANTS, FS_5.1, FS_5.3]
 # Source of project is git repository: https://github.com/edickie/compare_surf_tools
